@@ -579,7 +579,7 @@ def getItems(items,fanart):
                             if addon.getSetting('genesisorpulsar') == '0':
                                 imdb = 'plugin://plugin.video.genesis/?action=play&imdb='+i.string
                             else:
-                                imdb = 'plugin://plugin.video.pulsar/movie/'+i.string+'/play'
+                                imdb = 'plugin://plugin.video.pulsar/movie/tt'+i.string+'/play'
                             url.append(imdb)                      
                 elif len(item('f4m')) >0:
                         for i in item('f4m'):
