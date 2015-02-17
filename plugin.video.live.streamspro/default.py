@@ -573,6 +573,14 @@ def getItems(items,fanart):
                             else:
                                 utube = 'plugin://plugin.video.youtube/play/?playlist_id=' + i.string 
                     url.append(utube)
+                elif len(item('imdb')) >0:
+                    for i in item('imdb'):
+                        if not i.string == None:
+                            if addon.getSetting('genesisorpulsar') == '0':
+                                imdb = 'plugin://plugin.video.genesis/?action=play&imdb='+i.string
+                            else:
+                                imdb = 'plugin://plugin.video.pulsar/movie/'+i.string+'/play'
+                            url.append(imdb)                      
                 elif len(item('f4m')) >0:
                         for i in item('f4m'):
                             if not i.string == None:
