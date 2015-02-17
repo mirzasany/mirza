@@ -562,7 +562,33 @@ def getItems(items,fanart):
                     for i in item('yt-dl'):
                         if not i.string == None:
                             ytdl = i.string + '&mode=18'
-                            url.append(ytdl)  
+                            url.append(ytdl)
+                elif len(item('utube')) >0:
+                    for i in item('utube'):
+                        if not i.string == None:
+                            if len(i.string) == 11:
+                                utube = 'plugin://plugin.video.youtube/play/?video_id='+ i.string 
+                            elif i.string.startswith('PL') and not '&order=' in i.string :
+                                utube = 'plugin://plugin.video.youtube/play/?&order=default&playlist_id=' + i.string
+                            else:
+                                utube = 'plugin://plugin.video.youtube/play/?playlist_id=' + i.string 
+                    url.append(utube)
+                elif len(item('f4m')) >0:
+                        for i in item('f4m'):
+                            if not i.string == None:
+                                if '.f4m' in i.string:
+                                    f4m = 'plugin://plugin.video.f4mTester/?url='+urllib.quote_plus(i.string)
+                                elif '.m3u8' in i.string:
+                                    f4m = 'plugin://plugin.video.f4mTester/?url='+urllib.quote_plus(i.string)+'&amp;streamtype=HLS'
+                                    
+                                else:
+                                    f4m = 'plugin://plugin.video.f4mTester/?url='+urllib.quote_plus(i.string)+'&amp;streamtype=SIMPLE'
+                        url.append(f4m)
+                elif len(item('ftv')) >0:
+                    for i in item('ftv'):
+                        if not i.string == None:
+                            ftv = 'plugin://plugin.video.F.T.V/?name='+urllib.quote(name) +'&url=' +i.string +'&mode=125&ch_fanart=na'
+                        url.append(ftv)                        
                 if len(url) < 1:
                     raise
             except:
@@ -2141,8 +2167,16 @@ elif mode==18:
     #xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)    
 elif mode==19:
     addon_log("Commonresolvers")
+    if addon.getSetting('Updatecommonresolvers') == 'true':
+        l = os.path.join(home,'commonresolvers.py')
+        if xbmcvfs.exists(l):
+            os.remove(l)
+            
+        genesis_url = 'https://raw.githubusercontent.com/lambda81/lambda-addons/master/plugin.video.genesis/commonresolvers.py'
+        th= urllib.urlretrieve(genesis_url,l)
+        addon.setSetting('Updatecommonresolvers', 'false')
     import commonresolvers
-    resolved=commonresolvers.get(url)
+    resolved=commonresolvers.get(url)    
     if resolved:
         if isinstance(resolved,list):
             for k in resolved:
@@ -2159,7 +2193,7 @@ elif mode==19:
             resolver = resolved        
         playsetresolved(resolver,name,iconimage)
     else: 
-        print 'Probably,this host is not supported or resolver is broken::',url     
+        xbmc.executebuiltin("XBMC.Notification(LiveStreamsPro,Probably,this host is not supported or resolver is broken::,10000)")    
 
 elif mode==21:
     addon_log("download current file using youtube-dl service")
