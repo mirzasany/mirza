@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.ZemTV-shani"
-       name="ZemTV.com"
+       name="Live Channels"
        version="3.3.6"
        provider-name="shani">
   <requires>
